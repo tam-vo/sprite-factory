@@ -12,7 +12,7 @@ module SpriteFactory
 
     attr :input
     attr :config
-
+  
     def initialize(input, config = {})
       @input  = input.to_s[-1] == "/" ? input[0...-1] : input # gracefully ignore trailing slash on input directory name
       @config = config
@@ -25,7 +25,7 @@ module SpriteFactory
       @config[:pngcrush]   ||= SpriteFactory.pngcrush
       @config[:nocomments] ||= SpriteFactory.nocomments
     end
-
+  
     #----------------------------------------------------------------------------
 
     def run!(&block)
@@ -55,7 +55,9 @@ module SpriteFactory
 
       css = []
       css << style_comment(header) unless nocomments?                       # header comment
-      css << style(selector, css_url, images, &block)                       # generated styles
+      css << retina_wrapper_start() if retina?                                    # if retina images
+      css << style(selector, css_url, images, max,  &block)                       # generated styles
+      css << retina_wrapper_end() if retina?                                    # if retina images
       css << IO.read(custom_style_file) if File.exists?(custom_style_file)  # custom styles
       css = css.join("\n")
 
@@ -67,6 +69,8 @@ module SpriteFactory
         css_file.close
       end
 
+
+
       if config[:return] == :images
         images # if caller explicitly asked for detailed images hash instead of generated CSS
       else
@@ -76,8 +80,12 @@ module SpriteFactory
     end
 
     #----------------------------------------------------------------------------
-
+  
     private
+
+    def retina?
+      config[:retina]
+    end
 
     def selector
       config[:selector]
@@ -227,8 +235,8 @@ module SpriteFactory
 
     #----------------------------------------------------------------------------
 
-    def style(selector, url, images, &block)
-      defaults = Style.generate(style_name, selector, url, images, custom_styles) # must call, even if custom block is given, because it stashes generated css style into image[:style] attributes
+    def style(selector, url, images, max, &block)
+      defaults = Style.generate(style_name, selector, url, images, custom_styles, config, max) # must call, even if custom block is given, because it stashes generated css style into image[:style] attributes
       if block_given?
         yield images.inject({}) {|h,i| h[i[:name].to_sym] = i; h} # provide custom rule builder a hash by image name
       else
@@ -240,6 +248,14 @@ module SpriteFactory
       Style.comment(style_name, comment)
     end
 
+    def retina_wrapper_start
+      Style.retina_wrapper_start
+    end
+
+    def retina_wrapper_end
+      Style.retina_wrapper_end
+    end
+
     #----------------------------------------------------------------------------
 
     SUPPORTS_PNGCRUSH = !`which pngcrush`.empty? rescue false # rescue on environments without `which` (windows)
@@ -248,7 +264,7 @@ module SpriteFactory
       if SUPPORTS_PNGCRUSH && config[:pngcrush]
         crushed = "#{image}.crushed"
         `pngcrush -rem alla -reduce -brute #{image} #{crushed}`
-        FileUtils.mv(crushed, image)
+        FileUtils.mv(crushed, image) 
       end
     end
 
