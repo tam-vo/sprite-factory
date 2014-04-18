@@ -30,6 +30,7 @@ pngcrush_help     = "use pngcrush to optimize generated image"
 padding_help      = "add padding to each sprite"
 margin_help       = "add margin to each sprite"
 nocomments_help   = "suppress comments in generated stylesheet"
+custom_styles_help   = "Add custom styles for each sprites (E.g.: --custom-styles='display: inline-block;'"
 
 op.on("--layout       [ORIENTATION]", layout_help)       {|value| options[:layout]       = value }
 op.on("--style        [STYLE]",       style_help)        {|value| options[:style]        = value }
@@ -38,6 +39,7 @@ op.on("--selector     [SELECTOR]",    selector_help)     {|value| options[:selec
 op.on("--cssurl       [CSSURL]",      cssurl_help)       {|value| options[:cssurl]       = value }
 op.on("--output-image [PATH]",        output_image_help) {|value| options[:output_image] = value }
 op.on("--output-style [PATH]",        output_style_help) {|value| options[:output_style] = value }
+op.on("--custom-styles [STYLES]",     custom_styles_help) {|value| options[:custom_style] = value }
 op.on("--pngcrush",                   pngcrush_help)     {|value| options[:pngcrush]     = value }
 op.on("--padding [PIXELS]",           padding_help)      {|value| options[:padding]      = value.to_i }
 op.on("--margin [PIXELS]",            margin_help)       {|value| options[:margin]       = value.to_i }

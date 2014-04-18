@@ -45,13 +45,14 @@ module SpriteFactory
 
     #----------------------------------------------------------------------------
 
-    def self.generate(style_name, selector, url, images)
+    def self.generate(style_name, selector, url, images, custom_styles="")
       styles = []
       images.each do |image|
         attr = [
           "width: #{image[:cssw]}px",
           "height: #{image[:cssh]}px",
-          "background: #{url} #{-image[:cssx]}px #{-image[:cssy]}px no-repeat"
+          "background: #{url} #{-image[:cssx]}px #{-image[:cssy]}px no-repeat",
+          custom_styles
         ]
         image[:selector] = selector                          # make selector available for (optional) custom rule generators
         image[:style]    = send("#{style_name}_style", attr) # make pure style available for (optional) custom rule generators (see usage of yield inside Runner#style)
