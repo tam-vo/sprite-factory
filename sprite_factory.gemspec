@@ -4,12 +4,12 @@ require 'sprite_factory'
 
 Gem::Specification.new do |s|
 
-  s.name        = "sprite-factory"
+  s.name        = "sprite-factory-custom"
   s.version     = SpriteFactory::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Jake Gordon"]
-  s.email       = ["jake@codeincomplete.com"]
-  s.homepage    = "https://github.com/jakesgordon/sprite-factory"
+  s.authors     = ["Jake Gordon", "Tam Vo"]
+  s.email       = ["jake@codeincomplete.com", "vo.mita.ov@gmail.com"]
+  s.homepage    = "https://github.com/tam-vo/sprite-factory"
   s.summary     = SpriteFactory::SUMMARY
   s.description = SpriteFactory::DESCRIPTION
 
