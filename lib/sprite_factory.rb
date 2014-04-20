@@ -2,9 +2,9 @@ module SpriteFactory
 
   #----------------------------------------------------------------------------
 
-  VERSION     = "1.6.1"
+  VERSION     = "1.6.2"
   SUMMARY     = "Automatic CSS sprite generator"
-  DESCRIPTION = "[tam-vo/sprite-factory] Combines individual images from a directory into a single sprite image file and creates an appropriate CSS stylesheet"
+  DESCRIPTION = "[tam-vo/sprite-factory v#{VERSION}] Combines individual images from a directory into a single sprite image file and creates an appropriate CSS stylesheet"
   LIB         = File.dirname(__FILE__)
 
   autoload :Runner,  File.join(LIB, 'sprite_factory/runner')  # controller that glues everything together
